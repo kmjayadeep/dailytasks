@@ -1,15 +1,21 @@
-import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
+import express, {Request, Response} from 'express';
+import mongoose from 'mongoose';
 import morgan from 'morgan';
-import { ENV } from './config';
-import { initializeModels } from './models';
+import {ENV, MONGO_URL} from './config';
+import User from './models/user';
 
 const debug = require('debug')('app:app');
 
 export async function boostrap() {
   debug('initializing application in %o environment', ENV);
 
-  await initializeModels();
+  await mongoose.connect(MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+
+  debug('connected to mongodb', MONGO_URL);
 
   const app = express();
 

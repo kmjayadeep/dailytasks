@@ -1,22 +1,12 @@
-import { Model, DataTypes } from 'sequelize';
+import mongoose from 'mongoose';
 
-export class User extends Model {
-  public id!: number; // Note that the `null assertion` `!` is required in strict mode.
-  public name!: string;
-
-  // timestamps!
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+export interface IUser extends mongoose.Document {
+  name: string;
 }
 
-export const userSchema = {
-  id: {
-    type: DataTypes.INTEGER.UNSIGNED,
-    autoIncrement: true,
-    primaryKey: true,
-  },
-  name: {
-    type: new DataTypes.STRING(128),
-    allowNull: false,
-  },
-};
+export const UserSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+});
+
+const User = mongoose.model<IUser>('User', UserSchema);
+export default User;
