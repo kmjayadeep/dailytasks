@@ -1,9 +1,10 @@
-FROM node as builder
+FROM node:slim as builder
 
 WORKDIR /app
 
-COPY ["./package.json", "./package-lock.json", "/app/"]
+COPY package*.json ./
 
+# install exact versions from package-lock.json
 RUN npm ci
 
 COPY . .
