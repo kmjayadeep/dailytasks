@@ -1,7 +1,10 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import { ENV } from './config';
+const debug = require('debug')('app:app');
+
+debug('initializing application in %o environment', ENV);
 
 // Create Express server
 const app = express();
@@ -16,7 +19,7 @@ if (ENV !== 'production') {
   app.use(morgan('combined'));
 }
 
-app.get('/', (_, res) => {
+app.get('/', (_req: Request, res: Response) => {
   res.send('backend v1.0.0');
 });
 
