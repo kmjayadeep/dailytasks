@@ -1,9 +1,9 @@
 import bodyParser from 'body-parser';
-import express, {Request, Response} from 'express';
+import express, { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
-import {ENV, MONGO_URL} from './config';
-import User from './models/user';
+import { ENV, MONGO_URL } from './config';
+import { addProject } from './controllers/project.controller';
 
 const debug = require('debug')('app:app');
 
@@ -32,6 +32,8 @@ export async function boostrap() {
   app.get('/', (_req: Request, res: Response) => {
     res.send('backend v1.0.0');
   });
+
+  app.post('/api/project', addProject);
 
   return app;
 }

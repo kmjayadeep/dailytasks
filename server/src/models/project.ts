@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
 
-export interface ITask {}
+export interface ITask {
+  name: string,
+  done: boolean,
+  date: Date,
+}
 
 export interface IProject extends mongoose.Document {
   name: string;
@@ -24,7 +28,7 @@ export const projectSchema = new mongoose.Schema({
       name: {
         type: String,
         required: true,
-      }
+      },
     },
   ],
   archived: { type: Boolean, default: false },
