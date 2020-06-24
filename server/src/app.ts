@@ -4,23 +4,24 @@ import morgan from 'morgan';
 import { ENV } from './config';
 const debug = require('debug')('app:app');
 
-debug('initializing application in %o environment', ENV);
+export async function boostrap() {
+  debug('initializing application in %o environment', ENV);
+  // Create Express server
+  const app = express();
 
-// Create Express server
-const app = express();
+  // Express configuration
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: true }));
 
-// Express configuration
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+  if (ENV !== 'production') {
+    app.use(morgan('dev'));
+  } else {
+    app.use(morgan('combined'));
+  }
 
-if (ENV !== 'production') {
-  app.use(morgan('dev'));
-} else {
-  app.use(morgan('combined'));
+  app.get('/', (_req: Request, res: Response) => {
+    res.send('backend v1.0.0');
+  });
+
+  return app;
 }
-
-app.get('/', (_req: Request, res: Response) => {
-  res.send('backend v1.0.0');
-});
-
-export default app;
