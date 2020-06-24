@@ -3,7 +3,7 @@ import express, { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 import { ENV, MONGO_URL } from './config';
-import { addProject } from './controllers/project.controller';
+import { addProject, getProjects } from './controllers/project.controller';
 
 const debug = require('debug')('app:app');
 
@@ -33,7 +33,14 @@ export async function boostrap() {
     res.send('backend v1.0.0');
   });
 
+  app.get('/api/project', getProjects);
   app.post('/api/project', addProject);
 
   return app;
+}
+
+export async function shutdown() {
+  debug('shutting down app server');
+  await mongoose.disconnect();
+  debug('shut down complete');
 }
