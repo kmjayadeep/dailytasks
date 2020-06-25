@@ -1,9 +1,10 @@
 import mongoose from 'mongoose';
 
 export interface ITask {
-  name: string,
-  done: boolean,
-  date: Date,
+  name: string;
+  done?: boolean;
+  description: string;
+  date: Date;
 }
 
 export interface IProject extends mongoose.Document {
@@ -29,10 +30,28 @@ export const projectSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
+      description: String,
     },
   ],
   archived: { type: Boolean, default: false },
 });
 
 const Model = mongoose.model<IProject>('Project', projectSchema);
+
+export const addTaskToProject = async (projectId: string, task: ITask) => {
+  const project = await Model.findOneAndUpdate(
+    {
+      _id: projectId,
+    },
+    {
+      $push: {
+        tasks: task,
+      },
+    },
+    { new: true }
+  );
+
+  return project;
+};
+
 export default Model;

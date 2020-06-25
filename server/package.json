@@ -7,7 +7,7 @@
     "dev": "DEBUG=app* nodemon",
     "build": "tsc",
     "start": "DEBUG=app* node dist/index.js",
-    "e2e": "DEBUG=app* ts-mocha e2e/**/*.spec.ts --watch-extensions ts --watch"
+    "e2e": "DEBUG=app* ts-mocha e2e/**/*.spec.ts --watch-extensions ts --watch-files e2e/**/*.spec.ts --watch"
   },
   "keywords": [],
   "author": "Jayadeep KM <kmjayadeep@gmail.com>",
