@@ -3,8 +3,8 @@ import express, { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 import { ENV, MONGO_URL } from './config';
-import { addProject, getProjects } from './modules/project/project.controller';
-import { addTask } from './modules/project/task.controller';
+import { addProject, getProjects, deleteProject, editProject } from './modules/project/project.controller';
+import { addTask, deleteTask, editTask } from './modules/project/task.controller';
 
 const debug = require('debug')('app:app');
 
@@ -38,12 +38,13 @@ export async function boostrap() {
   // CRUD projects
   app.get('/api/project', getProjects);
   app.post('/api/project', addProject);
-  // app.delete('/api/project/:projectId', addProject);
+  app.put('/api/project/:projectId', editProject);
+  app.delete('/api/project/:projectId', deleteProject);
 
   // CRUD tasks in project
   app.post('/api/project/:projectId/task', addTask);
-  // app.put('/api/project/:projectId/task', addProject);
-  // app.delete('/api/project/:projectId/task', addProject);
+  app.put('/api/project/:projectId/task/:taskId', editTask);
+  app.delete('/api/project/:projectId/task/:taskId', deleteTask);
 
   return app;
 }

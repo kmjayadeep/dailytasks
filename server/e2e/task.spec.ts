@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { boostrap, shutdown } from '../src/app';
 import { IProject } from '../src/models/project';
 
-describe.only('Task', function () {
+describe('Task', function () {
   let app: Express;
   let project: IProject;
 

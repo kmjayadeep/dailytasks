@@ -1,9 +1,11 @@
 import { Request, Response } from 'express';
+
 import {
-  RESPONSE_SUCCESS,
-  ERORR_INTERNAL_SERVER_ERROR,
-} from '../../helpers/responseCodes';
-import { addTaskToProject } from '../../models/project';
+  sendSuccessResponse,
+  sendValidationError,
+} from '../../helpers/response';
+
+import { addTaskToProject, deleteTaskFromProject, editTaskInProject } from '../../models/project';
 const debug = require('debug')('app:task.controller');
 
 export const addTask = async (req: Request, res: Response) => {
@@ -12,26 +14,35 @@ export const addTask = async (req: Request, res: Response) => {
 
   const { name, description, date } = task;
 
+  if (!name) {
+    return sendValidationError(res, { message: 'name is required' });
+  }
+
   debug('adding new task to project', projectId);
 
   const projectObj = await addTaskToProject(projectId, {
     name,
     description,
-    date
+    date,
   });
 
-  return res.json({
-    code: RESPONSE_SUCCESS,
-    data: projectObj,
-  });
+  sendSuccessResponse(res, projectObj);
 };
+
 
 export const deleteTask = async (req: Request, res: Response) => {
-  // const projectId = req.params.projectId;
-  // const project = await Project.findOne({ projectId }).exec();
+  const { projectId, taskId } = req.params;
+  const project = await deleteTaskFromProject(projectId, taskId);
 
-  return res.json({
-    code: RESPONSE_SUCCESS,
-    // data: projects,
-  });
+  sendSuccessResponse(res, { project });
 };
+
+export const editTask = async (req: Request, res: Response) => {
+  const { projectId, taskId } = req.params;
+
+  const task = req.body;
+
+  const project = await editTaskInProject(projectId, taskId, task);
+  sendSuccessResponse(res, { project });
+};
+
