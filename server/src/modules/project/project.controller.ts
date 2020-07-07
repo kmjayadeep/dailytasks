@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import {
   RESPONSE_SUCCESS,
-  ERORR_INTERNAL_SERVER_ERROR,
+  ERROR_INTERNAL_SERVER_ERROR,
 } from '../../helpers/responseCodes';
 import Project from '../../models/project';
 
@@ -18,7 +18,7 @@ export const addProject = async (req: Request, res: Response) => {
     });
   } catch (err) {
     return res.status(500).json({
-      code: ERORR_INTERNAL_SERVER_ERROR,
+      code: ERROR_INTERNAL_SERVER_ERROR,
     });
   }
 };
